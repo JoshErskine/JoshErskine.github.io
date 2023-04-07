@@ -1,0 +1,227 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>MySQL Project</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					<a href="#" class="image avatar"><img src="images/1664747502545.jpg" alt="" /></a>
+					<h1><strong>Hello, I'm Josh!</strong>
+						<br>Welcome to my digital portfolio.<br>
+					</h1>
+				</div>
+			</header>
+
+		<!-- Main -->
+			<div id="main">
+				
+					<section id="four">
+
+							<header>
+								<h2>MySQL Instagram User Database Project<strong></strong></h2>
+								
+                                
+							</header>
+							<p>This project was completed to conclude my first coding boot camp. Cloning the basic functionalities and focusing on the core entities of a social media platform like Instagram provided the opportunity to work with thousands of data entries and manage a database.</p>
+							<header>
+								<h4>Summary</h4>
+							</header>
+							<p>In sumary, this project involved using fictional user data to provide solutions and answer complex queries faced by businesses and social media platforms. Examples of this includes targeting inactive users with advertising campaigns, identifying bots on the website, working out averages and assessing the best hashtags for brands to use when posting on the site.
+                            <br> <br>
+                                This was accomplished using by creating a relational database, using one-to-many and many-to-many relationships, working with multiple tables by using foreign keys.</p> 
+							<h4>Project Objectives</h4>
+                            <li>
+                                Composing an Entity-Relationship Diagram.
+                            <li>
+                                Creating the Instagram Database schema.
+                            </li>
+                                <li>
+                                    Inserting thousands of entries of fictional user data.
+                                </li> 
+                                <li>
+                                    Resolving common and complex queries around the core entities of a social media platform.
+                                </li> 
+                            </li>
+
+								<br>
+							</header>
+							<a href="images/ED.png" class="image fit thumb"><img src="images/ED.png" alt="" /></a>
+                            <h5><em>Entity Relationship Diagram created using draw.io</em></h5>
+                                <br>
+                                    <br>
+                            
+                            <h2>Instagram Database Schema</h2>
+							<pre><code>// Users Schema:
+
+CREATE TABLE users (
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+// Photos Schema 
+
+CREATE TABLE photos (
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    image_url VARCHAR(255) NOT NULL,
+    user_id INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY(user_id) REFERENCES users(id)
+);
+
+// Comments Schema
+
+CREATE TABLE comments (
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    comment_text VARCHAR(255) NOT NULL,
+    photo_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY(photo_id) REFERENCES photos(id),
+    FOREIGN KEY(user_id) REFERENCES users(id)
+);
+
+// Likes Schema 
+
+CREATE TABLE likes (
+    user_id INTEGER NOT NULL,
+    photo_id INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY(user_id) REFERENCES users(id),
+    FOREIGN KEY(photo_id) REFERENCES photos(id),
+    PRIMARY KEY(user_id, photo_id)
+);
+
+// Followers Schema
+
+CREATE TABLE follows (
+    follower_id INTEGER NOT NULL,
+    followee_id INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY(follower_id) REFERENCES users(id),
+    FOREIGN KEY(followee_id) REFERENCES users(id),
+    PRIMARY KEY(follower_id, followee_id)
+);
+
+// Photo tag Schema 
+
+CREATE TABLE tags (
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    tag_name VARCHAR(255) UNIQUE,
+    created_at TIMESTAMP DEFAULT NOW()
+  );
+  CREATE TABLE photo_tags (
+      photo_id INTEGER NOT NULL,
+      tag_id INTEGER NOT NULL,
+      FOREIGN KEY(photo_id) REFERENCES photos(id),
+      FOREIGN KEY(tag_id) REFERENCES tags(id),
+      PRIMARY KEY(photo_id, tag_id)
+  );
+</code></pre>
+						</section>
+                         
+                        <a href="InstagramData.txt" download class="button icon solid fa-download">Instagram User Data</a>
+                        
+                        <br>
+                            <br>
+                                <br>
+                        <header>
+                            <h2>Working with the Database<strong></strong></h2>
+                            
+                            
+                        </header>
+                        <p>Following the creation of the database, I was provided with a series of challenges representative of those a social media platform would face. <br> <br> I have included three of the most prevalent issues and their solutions:</p>
+                        <br>
+                                
+                        <header>
+                            <h4>1. Inactive Users</h4>
+                        </header>
+                        <p>Identifying inactive users is a common operation for platforms; in this instance, I determined this by identifying the users that have never posted a photo.
+                            <br>
+                                <br>
+                            I joined both the users and photos table using a LEFT join; the users that have not posted on the platform had a NULL value in the image_url column which was then filtered by WHERE.</p>
+                        
+                        
+                        
+                            <pre><code>// Identifying Inactive Users:
+
+SELECT username
+FROM users
+LEFT JOIN photos
+        ON users.id = photos.user_id
+WHERE photos.id IS NULL;
+                </code></pre> 
+                    
+                <br>                           
+                            <h4>2. Instagram Bots</h4>
+							</header>
+							<p>Identifying potential bots on the platform, this was determined by locating users that have liked every photo on the platform.
+                                <br>
+                                    <br>
+
+                                    I joined the USERS and LIKES tables using an INNER JOIN as we were not trying to identify users with corresponding likes. I then grouped all users that had liked a photo on the platform. Finally, I used the HAVING function to allow me to filter my results based off of subquery - where the number of things a user has liked is the total of photos on Instagram.</p>
+
+                            <pre><code>// Identify Bots:
+
+SELECT username, 
+        Count(*) AS num_likes 
+FROM   users 
+        INNER JOIN likes 
+        ON users.id = likes.user_id 
+GROUP  BY likes.user_id 
+HAVING num_likes = (SELECT Count(*) 
+                    FROM   photos); 
+                </code></pre>
+
+                <br>
+                    <header>
+                            <h4>3. Five Most Commonly Used Hashtags</h4>
+                        </header>
+                            <p>Identified the trending hashtags on the platform for brand insight. <br> <br> 
+
+                                I joined both tables for tags and photo_tags. Following this, I grouped by the tag.id to collapse the results. The COUNT function allowed me to collapse this further, displaying the total number of uses alongside each hashtag. The ORDER BY and LIMIT functions then identified the five most used hashtags.
+                                 
+                            <pre><code>// Identifying 5 Most Commonly Used Hashtags:
+    
+SELECT tags.tag_name, 
+        Count(*) AS total 
+FROM   photo_tags 
+        JOIN tags 
+        ON photo_tags.tag_id = tags.id 
+GROUP  BY tags.id 
+ORDER  BY total DESC 
+LIMIT  5;
+                </code></pre>  
+
+					</section>
+
+					</section>
+				
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="inner">
+					<ul class="icons">
+						<li><a href="https://www.linkedin.com/in/joshua-erskine/" class="icon brands fa-linkedin"><span class="label">Twitter</span></a></li>
+						<li><a href="https://github.com/JoshErskine" class="icon brands fa-github"><span class="label">Github</span></a></li>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.poptrox.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
