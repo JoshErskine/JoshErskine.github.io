@@ -1,0 +1,332 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Python Project Walkthrough</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					<a href="index.html" class="image avatar"><img src="images/1664747502545.jpg" alt="Profile Picture" /></a>
+					<h1><strong>Hello, I'm Josh!</strong>
+						<br>Welcome to my digital portfolio.<br>
+					</h1>
+				</div>
+			</header>
+
+		<!-- Main -->
+			<div id="main">
+				
+					<section id="four">
+
+							<header>
+								<h2>Python Text-based Slot Machine Project<strong></strong></h2>
+								
+                                
+							</header>
+							<p>I completed this project as part of my Codecademy Python 3 course. I was tasked with researching, brainstorming and building an interactive terminal program. </p>
+							<header>
+								<h4>Summary</h4>
+							</header>
+							<p>This project allowed me to practise loops, functions, logic, conditional statements and variables. It is a text-based Python Slot Machine with a user balance and randomly generated outcomes on each spin. To win, the result must be three of the same letter on one line. There is a continuous loop providing the opportunity to spin again, ensuring replay value for the user. 
+                          </p> 
+							<h4>Outline of Program Functionalities</h4>
+                            <li>
+                                Collect user input for deposits and bet totals.
+                            <li>
+                                Incrementing user deposits to the existing balance.
+                            </li>
+                                <li>
+                                    Allow user to bet on multiple lines.
+                                </li> 
+                                <li>
+                                    Generate random outcomes for each spin.
+                                </li> 
+                                <li>
+                                    Add winnings and subtract losses from the existing balance.
+                                </li>
+                                <li>
+                                    Create loop for replay value.
+                                </li>
+                            </li>
+                                <br>
+                            <a href="https://github.com/JoshErskine/Python_Slot_Machine/tree/main/PythonSlotMachine"class="button fab fa-github"> Repository</a>
+								<br>
+                                    <br>
+							</header>
+							<video controls autoplay muted loop src="assets/Python_Slot_Machine.mp4" width="500"></video>
+                            <h5><em>Project Demo</em></h5>
+                                <br>
+                                  
+ 
+                        <header>
+                            <h2>Code Walkthrough<strong></strong></h2>
+                            
+                        </header>
+                              <br>
+                        <header>
+                            <h4>1. Collecting User Input - Deposits & Lines</h4>
+                        </header>
+                        <p><strong>Deposit Function</strong> 
+                            <br>
+                        Firstly I created the function <em>def deposit</em>, responsible for collecting user input, using a while loop to continually prompt the user to insert a valid amount. I ensured the value is an integer through the <em>.isdigit method</em>, also checking that the value inputted is greater than 0 to continue.</p>
+                        
+                        <p><strong>Lines Function</strong> 
+                            <br>
+                        I established global constants to include in the <em>get_number_of_lines function</em>, ensuring the program remains dynamic. </p>
+                        <p>The function <em>get_number_of_lines</em> collects users' input to determine how many lines to bet on. There is a prompt for the user to input a number between 1-3 to the terminal, with MAX_LINES (3) added to the string. I also included an IF statement to ensure user input is <em><= 1 and <= MAX_LINES (3)</em> to continue with the program.</p>
+                        
+                        
+                        
+                            <pre><code># User Input Function - Deposit
+
+def deposit():
+    while True: 
+        amount = input("What would you like to deposit? £")
+        if amount.isdigit():
+            amount = int(amount)
+            if amount > 0:
+                    break
+            else: 
+                print("Amount must be greater than £0.")
+        else:
+            print("Please enter a number.")
+                                
+        return amount
+                                       
+# User Input Function - Betting 
+                                
+def get_number_of_lines():
+    while True: 
+        lines = input("Enter the number of lines to bet on (1-" + str(MAX_LINES) + ")? ")
+        if lines.isdigit():
+            lines = int(lines)
+            if 1 <= lines <= MAX_LINES:
+                    break
+            else: 
+                print("Enter a valid number of lines")
+        else:
+            print("Please enter a number.")
+                                
+        return lines
+                </code></pre> 
+                    
+                <br>                           
+                            <h4>2. Collect User Input - Get Bet</h4>
+							</header>
+                            <p><strong>Bet Function</strong><br>
+							The <em>get_bet</em> function collects integer input from the user, where they can decide how much they wish to bet. I utilised the global constants established at the beginning of the program to implement another conditional statement, ensuring the MIN_BET and MAX_BET is applied to user input. Further to this, I added an <em>f string</em> when printing an error message to the terminal, providing further instruction to the user.</p>
+                        
+                            <p><strong>Main Function</strong><br>
+                            Following this, I added an <em>f string</em> to the main function, embedding {bet} amount with {lines} to print to the terminal. In addition, I included a while loop in the <em>main</em> function to implement <em>total_bet</em> variable, bet multiplied by the number of lines user inputted. If <em>total bet</em> > balance, a string is printed to terminal to inform the user of the current balance.
+                            </p>
+
+
+                            <pre><code># Get Bet Function:
+
+def get_bet():
+    while True: 
+        amount = input("What would you like to bet on each line? £")
+        if amount.isdigit():
+            amount = int(amount)
+            if MIN_BET <= amount <= MAX_BET:
+                        break
+            else: 
+                print(f"Amount must be between ${MIN_BET} - ${MAX_BET}.")
+        else:
+            print("Please enter a number.")
+                            
+        return amount
+        
+# Addition to Main Function:
+
+total_bet = bet * lines
+    if total_bet > balance:
+        print(f"You do not have enough to bet that amount, your current balance is: ${balance}")
+            else:
+                break
+                </code></pre>
+
+                <br>
+                    <header>
+                            <h4>3. Slot Machine Functionality</h4>
+                        </header>
+                            <p><strong>Constants and Modules</strong><br>
+
+                                I imported the <em>random</em> module and added it to the program, this was used to randomly generate slot machine values. In addition, I included more global constants to the program – ROWS (3) COLS (3), ensuring further dynamicity to the program, and established the quantity for each string value, A-D.</p>
+                            <p><strong>Slot Machine Spin Function</strong>
+                                <br>
+                                Using three parameters - <em>rows, cols, symbols</em>, I generated what symbols will be in each column based on the frequency of symbols established in <em>symbol_count</em>.
+
+                                I then defined the <em>all_symbols</em> list and create a for loop. The <em>.items</em> method provides the dictionary's key-value pairs <em>(symbol)</em> and <em>(symbol_count)</em>, avoiding manually referencing the values. I then created an additional loop to loop through the symbol count, adding to the <em>all_symbols</em> list.
+                                
+                                <p><strong>Column Values</strong><br>
+                                
+                                    Following the creation of the all_symbols list, the next step was establishing what values will be added to each column:
+                                    
+                                    <li>
+                                        Started by defining columns list.                                    
+                                    </li>
+                                        <li>
+                                            For loop to generate a column for every single column I have, in this case, three times.
+                                        </li> 
+                                        <li>
+                                            Use <em>random.choice</em> to select a value from <em>all_symbols</em> list randomly.
+                                        </li> 
+                                        <li>
+                                            Create copy of the <em>all_symbols</em> list as <em>current_symbols</em> using the "[:]" operator, copying the list ensures values are not being removed in the creation of the next column.
+                                        </li>
+                                        <li>
+                                            Second for loop to loop through the number of values we need to generate, equal to ROWS(3). Then add the value to our column through <em>column.append(value)</em>.
+                                        </li>
+                                    </li>
+                                    <br>
+                                 
+                            <pre><code># Slot Machine Functions - Generating Spins
+    
+def get_slot_machine_spin(rows, cols, symbols):
+    all_symbols = []
+    for symbol, symbol_count in symbols.items():
+        for _ in range(symbol_count):
+            all_symbols.append(symbol)
+                            
+    columns = []
+    for _ in range(cols):
+        column = []
+        current_symbols = all_symbols[:]
+        for _ in range(rows):
+            value = random.choice(current_symbols)
+            current_symbols.remove(value)
+            column.append(value)
+                            
+            columns.append(column)
+                            
+    return columns
+                </code></pre>  
+                        <br>
+                <header>
+                    <h4>4. Printing Machine to Console</h4>
+                </header>
+                    <p>I needed to determine the number of <em>rows</em> to have based on the number of <em>columns</em>. The number of rows that I have is the number of elements in each of the columns. Created a for loop, where <em>columns[0]</em>, assuming we always have a minimum of one column. I then created a second for loop through the items in all my columns, only printing the first value in the current row. <br> <br> 
+
+                        I utilised the "|" operator to add separation between the values when printing to the terminal. Created IF statement to ensure the operator is not printed after the final value on each column. The <em>enumerate</em> method gives us the index and the column whilst it loops through, allowing me to add <em>i != len(columns) – 1</em>. This is the maximum index we can access an element inside the columns list, therefore only printing the "|" operator when it meets the condition. Added <em>end</em> parameter to print statement to start a new line.
+                         
+                    <pre><code># Printing Slot Machine
+
+def print_slot_machine(columns):
+    for row in range(len(columns[0])):
+        for i, column in enumerate(columns):
+            if i != len(columns) - 1:
+                print(column[row], end=" | ")
+                    else:
+                        print(column[row], end="")
+                    
+                            print()
+        </code></pre>  
+                <br>
+        <header>
+            <h4>5. Check Winnings Function</h4>
+        </header>
+            <p><strong>Symbol Values</strong>
+                <br>
+                Added <em>symbol_value</em> constant to determine the multipliers for the bet return, the rarer the symbol, the higher the return.</p>
+            
+            <p><strong>Check Winnings</strong> <br>
+                
+            I created the <em>check_winnings</em> function, using <em>columns, lines, bet, values</em> as parameters. The rows determine the winnings the user has placed a bet on. In the for loop, I check that every symbol in the line is the same. For else loop created, checking every column for symbol, breaking from the loop if <em>symbol != symbol_to_check</em>; otherwise, the user has won, therefore <em>value[symbol] * bet</em>. The bet is the bet on each line, not the total bet.</p>                 
+            <pre><code> # Symbol Values
+symbol_value = {
+    "A": 5,
+    "B": 4,
+    "C": 3,
+    "D": 2
+}
+
+# Check Winnings Function
+
+def check_winnings(columns, lines, bet, values):
+    winnings = 0
+    winning_lines = []
+    for line in range(lines):
+        symbol = columns[0][line]
+        for column in columns:
+            symbol_to_check = column[line]
+            if symbol != symbol_to_check:
+                break
+        else:
+            winnings += values[symbol] * bet
+            winning_lines.append(line + 1)
+            
+    return winnings, winning_lines
+</code></pre>  
+            <br>
+            <h4>6. Spin Function and Main Function</h4>
+        </header>
+        <p><strong>Spin Function</strong>
+            <br>
+            The <em>spin()</em> function executes a single game: displaying user balance, stating the bet total, getting the result and printing the result onto the terminal, <em>winning_lines – total_bet.</em>
+            <p><strong>Main Function</strong>
+                <br>
+                I added a while loop to the <em>main</em> function, displaying the current balance on the terminal through an <em>f string</em> and giving the user an input prompt to either press <em>Enter</em> to continue playing and rerun the program or exit the game.
+                 
+            <pre><code># Spin Function
+
+def spin(balance):
+    lines = get_number_of_lines()
+    while True:
+        bet = get_bet()
+        total_bet = bet * lines
+            
+        if total_bet > balance:
+            print(
+                f"You do not have enough to bet that amount, your current balance is: ${balance}")
+        else:
+            break
+
+# Main Function - Loop to keep playing
+
+def main():
+    balance = deposit()
+    while True:
+        print(f"Current balance is ${balance}")
+        answer = input("Press enter to play (q to quit).")
+        if answer == "q":
+            break
+        balance += spin(balance)
+            
+        print(f"You left with ${balance}")
+            
+            
+main()
+</code></pre>  
+
+					</section>
+
+					</section>
+				
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="inner">
+					<ul class="icons">
+						<li><a href="https://www.linkedin.com/in/joshua-erskine/" class="icon brands fa-linkedin"><span class="label">Twitter</span></a></li>
+						<li><a href="https://github.com/JoshErskine" class="icon brands fa-github"><span class="label">Github</span></a></li>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.poptrox.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
