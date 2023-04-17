@@ -57,7 +57,7 @@
                                     <br>
                             
                             <h2>Instagram Database Schema</h2>
-							<pre><code>// Users Schema:
+							<pre><code>-- Users Table:
 
 CREATE TABLE users (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
@@ -65,7 +65,7 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
-// Photos Schema 
+-- Photos Table 
 
 CREATE TABLE photos (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
@@ -75,7 +75,7 @@ CREATE TABLE photos (
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
-// Comments Schema
+-- Comments Table
 
 CREATE TABLE comments (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
@@ -87,7 +87,7 @@ CREATE TABLE comments (
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
-// Likes Schema 
+-- Likes Table 
 
 CREATE TABLE likes (
     user_id INTEGER NOT NULL,
@@ -98,7 +98,7 @@ CREATE TABLE likes (
     PRIMARY KEY(user_id, photo_id)
 );
 
-// Followers Schema
+-- Followers Table
 
 CREATE TABLE follows (
     follower_id INTEGER NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE follows (
     PRIMARY KEY(follower_id, followee_id)
 );
 
-// Photo tag Schema 
+-- Photo tag Table 
 
 CREATE TABLE tags (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
