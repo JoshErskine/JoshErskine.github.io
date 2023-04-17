@@ -122,7 +122,7 @@ def get_number_of_lines():
 							The <em>get_bet</em> function collects integer input from the user, where they can decide how much they wish to bet. I utilised the global constants established at the beginning of the program to implement another conditional statement, ensuring the MIN_BET and MAX_BET is applied to user input. Further to this, I added an <em>f string</em> when printing an error message to the terminal, providing further instruction to the user.</p>
                         
                             <p><strong>Main Function</strong><br>
-                            Following this, I added an <em>f string</em> to the main function, embedding {bet} amount with {lines} to print to the terminal. In addition, I included a while loop in the <em>main</em> function to implement <em>total_bet</em> variable, bet multiplied by the number of lines user inputted. If <em>total bet</em> > balance, a string is printed to terminal to inform the user of the current balance.
+                            Following this, I added an <em>f string</em> to the main function, embedding {bet} amount with {lines} to print to the terminal. In addition, I included a while loop in the <em>main</em> function to implement <em>total_bet</em> variable, bet multiplied by the number of lines user inputted. If <em>total bet > balance</em>, a string is printed to terminal to inform the user of the current balance.
                             </p>
 
 
@@ -226,6 +226,11 @@ def print_slot_machine(columns):
                         print(column[row], end="")
                     
                             print()
+
+# Example Outcome
+B | A | D
+B | C | B
+C | B | D
         </code></pre>  
                 <br>
         <header>
